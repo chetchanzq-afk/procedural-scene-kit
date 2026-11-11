@@ -3,6 +3,8 @@
 **Procedural 3D scenes and film-look rendering for the web. Zero asset files.**
 Code-built models · Canvas/shader textures · SSAO / Bloom / volumetrics · Wet-ground reflections · Dynamic resolution
 
+> **This repo is two things in one.** It is an **Agent Skill** (`SKILL.md`) and a **runnable starter kit** (`assets/kit/`). The `-kit` suffix is the project name, not a package name — the skill ships a working kit because procedural scenes need something to execute. Installed skill title: *Procedural 3D Scene Generation*.
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![three.js](https://img.shields.io/badge/three.js-r180-black?style=flat-square)](https://threejs.org)
 [![Live Demo](https://img.shields.io/badge/LIVE_DEMO-try_in_browser-2ea44f?style=flat-square)](https://chetchanzq-afk.github.io/procedural-scene-kit/assets/kit/)
@@ -67,30 +69,52 @@ Copy `assets/kit/` into your project and replace three things to get a new scene
 
 The core modules (`kit / mesh / materials / pipeline / quality / shafts / weather`) stay untouched.
 
-<details>
-<summary>Use as an Agent Skill</summary>
+## Use as an Agent Skill
 
-This repository is also a `SKILL.md` skill. Once installed, you can ask an agent to "build a rainy-night port" and it will follow the documented pipeline.
+The repository root is a skill: [`SKILL.md`](./SKILL.md) + `references/` + the runnable kit. Copy the **whole directory**, not just `SKILL.md` — the skill reads `references/` and runs `assets/kit/`.
 
-| Harness | Install path |
+### Supported harnesses
+
+| Harness | Where it looks for skills |
 |---|---|
 | Trae (CN / International) | `~/.trae-cn/skills/` or `~/.trae/skills/`; project `.trae/skills/` |
 | Claude Code | `~/.claude/skills/`; project `.claude/skills/` |
 | Codex CLI | project `.agents/skills/`; user `~/.agents/skills/`; enterprise `/etc/codex/skills/` |
-| Other harnesses | Inject `SKILL.md` into the system prompt and expose file reading |
-
-One-line install:
+| Other harnesses | inject `SKILL.md` into the system prompt, expose file reading + shell |
 
 ```bash
-./scripts/install.sh trae-cn
+./scripts/install.sh trae-cn          # trae-cn | trae | claude | codex-user | codex-project
 powershell -File scripts\install.ps1 -Target codex-user
 ```
 
-Supported targets: `trae-cn`, `trae`, `claude`, `codex-user`, `codex-project`.
+Per-harness paths and fallbacks: [docs/harness-install.md](./docs/harness-install.md).
 
-See [docs/harness-install.md](./docs/harness-install.md) for details.
+### How to use it after installing
 
-</details>
+Start a new session and describe the scene; the harness loads the skill on its own. You do not call a command.
+
+> "Generate a 40k-triangle warehouse interior at dawn, screenshot it, and show me `__stats()`."
+
+> "Turn the port scene into a rainy night version — same layout, new theme."
+
+> "This scene looks flat. Diagnose the lighting and fix it."
+
+The agent then follows a fixed loop instead of free-styling:
+
+1. write `scene.spec.json` — theme, footprint, prop list, camera
+2. generate `props` → `scene-*.js` layout → `themes.js`
+3. serve it locally, screenshot, read `window.__stats()`
+4. iterate until the triangle budget is hit (20k draft / 80k–150k standard / 200k–400k high)
+
+Acceptance is mechanical: `__stats()` must report the target triangles and draw calls, and the screenshot must be inspected — "looks about right" is not a pass. If the harness has no browser tool, the skill still generates code but you verify by opening the page yourself.
+
+### Three ways to use this repo
+
+| Goal | Do this |
+|---|---|
+| Have an agent generate a scene | Install the skill, then describe the scene |
+| Hand-code your own scene | Copy `assets/kit/`, replace `props.js` / `scene-*.js` / `themes.js` |
+| Just look at it | Open the live demo, or serve `assets/kit` locally |
 
 ## Project structure
 

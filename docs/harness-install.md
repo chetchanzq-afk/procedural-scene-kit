@@ -2,6 +2,8 @@
 
 本技能同时包含 `SKILL.md` 与可运行代码（`assets/kit`、`examples`），安装时**整个目录一起复制**，不要只拷贝 `SKILL.md`。
 
+本文只讲「装到哪」。装完怎么触发、Agent 会走什么流程、怎么验收，见 README 的 **Use as an Agent Skill** 一节。
+
 ## Trae（CN / 国际版）
 
 ```bash
