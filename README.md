@@ -1,95 +1,96 @@
 # Procedural Scene Kit
 
-**用代码生成 3D 场景与电影感渲染，零外部资产文件。**
-代码建模 · Canvas/shader 程序化贴图 · SSAO/Bloom/体积光 · 湿地面反射 · 动态分辨率
+**Procedural 3D scenes and film-look rendering for the web. Zero asset files.**
+Code-built models · Canvas/shader textures · SSAO / Bloom / volumetrics · Wet-ground reflections · Dynamic resolution
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![three.js](https://img.shields.io/badge/three.js-r180-black?style=flat-square)](https://threejs.org)
-[![Live Demo](https://img.shields.io/badge/LIVE_DEMO-在线体验-2ea44f?style=flat-square)](https://chetchanzq-afk.github.io/procedural-scene-kit/assets/kit/)
+[![Live Demo](https://img.shields.io/badge/LIVE_DEMO-try_in_browser-2ea44f?style=flat-square)](https://chetchanzq-afk.github.io/procedural-scene-kit/assets/kit/)
 
-<!-- TODO: 替换为 assets/kit 示例运行截图（当前使用仓库内预览图） -->
-![港区示例](assets/kit/preview.jpg)
+![Rainy-night port generated with Procedural Scene Kit](docs/hero-16x9.jpg)
 
-本地运行一条命令即可看到示例场景，见下方「快速开始」。
+Run one command locally to see a scene yourself — see **Quick start** below.
 
 ---
 
-## 🎯 解决什么问题
+## 🎯 Why this exists
 
-传统 Web 3D 场景依赖下载 `.glb` 模型和 `.png/.jpg` 贴图，带来三个问题：**资产体积大**、**加载慢**、**风格不统一且难以批量调整**。
-Procedural Scene Kit 把模型、贴图、光照、后处理**全部放到运行时生成**，你只写代码，不碰素材文件。
+Traditional Web 3D relies on downloading `.glb` models and `.png/.jpg` textures. That brings three problems: **large asset payloads**, **slow first paint**, and **an art style that is hard to keep consistent or adjust in bulk**.
 
-> 适合：港口、仓库、街道、室内、基地等**硬表面场景**的快速原型与演示交付。
-> 不适合：角色、有机体、植被等需要唯一美术资产的场景；体积雾默认关闭，需按场景手动调参（`theme.volumetric`，建议 0.02–0.08）。
+Procedural Scene Kit generates models, textures, lighting and post-processing **at runtime**. You write code; you never touch asset files.
 
-## 快速开始
+> **Good for:** hard-surface environments — ports, warehouses, streets, interiors, facilities, bases.
+> **Not for:** characters, organics, or vegetation that need unique hand-authored art. Volumetric fog is disabled by default and needs per-scene tuning (`theme.volumetric`, 0.02–0.08).
 
-在线体验（GitHub Pages）：
+## Quick start
 
-- 港区：https://chetchanzq-afk.github.io/procedural-scene-kit/assets/kit/
-- 室内：https://chetchanzq-afk.github.io/procedural-scene-kit/examples/indoor-office/
+Try it online (GitHub Pages):
 
-本地运行，不需要构建：
+- Port: https://chetchanzq-afk.github.io/procedural-scene-kit/assets/kit/
+- Interior office: https://chetchanzq-afk.github.io/procedural-scene-kit/examples/indoor-office/
+
+Run locally — no build step:
 
 ```bash
 cd assets/kit
 python -m http.server 8877
-# 打开 http://127.0.0.1:8877/?theme=port-dawn
+# open http://127.0.0.1:8877/?theme=port-dawn
 ```
 
-另一个示例：
+Another example:
 
 ```bash
 cd examples/indoor-office
 python -m http.server 8877
 ```
 
-> 示例通过 importmap 从 CDN 加载 three.js r180；离线部署时把 `index.html` 里的 importmap 改成本地路径。
+> Examples load three.js r180 from a CDN via importmap. For offline use, point the importmap in `index.html` to local files.
 
-## 作为起始工程使用
+## Use as a starter project
 
-复制 `assets/kit/` 到你的项目，替换三处内容即可换场景：
+Copy `assets/kit/` into your project and replace three things to get a new scene:
 
-- `src/props.js`：道具库
-- `src/scene-*.js`：布局与相机
-- `src/themes.js`：光照、雾、配色、后处理
+- `src/props.js` — prop library
+- `src/scene-*.js` — layout and camera
+- `src/themes.js` — lighting, fog, palette, post FX
 
-内核（`kit / mesh / materials / pipeline / quality / shafts / weather`）不需要改。
+The core modules (`kit / mesh / materials / pipeline / quality / shafts / weather`) stay untouched.
 
 <details>
-<summary>作为 Agent Skill 使用</summary>
+<summary>Use as an Agent Skill</summary>
 
-本仓库同时是一个 `SKILL.md` 技能，装了之后可以直接说「做一个雨夜港区」让 Agent 按流程生成。
+This repository is also a `SKILL.md` skill. Once installed, you can ask an agent to "build a rainy-night port" and it will follow the documented pipeline.
 
-| Harness | 路径 |
+| Harness | Install path |
 |---|---|
-| Trae（CN / 国际） | `~/.trae-cn/skills/` 或 `~/.trae/skills/`；项目 `.trae/skills/` |
-| Claude Code | `~/.claude/skills/`；项目 `.claude/skills/` |
-| Codex CLI | 项目 `.agents/skills/`；用户 `~/.agents/skills/`；企业 `/etc/codex/skills/` |
-| 其他 harness | 把 `SKILL.md` 注入系统提示，并提供文件读取 |
+| Trae (CN / International) | `~/.trae-cn/skills/` or `~/.trae/skills/`; project `.trae/skills/` |
+| Claude Code | `~/.claude/skills/`; project `.claude/skills/` |
+| Codex CLI | project `.agents/skills/`; user `~/.agents/skills/`; enterprise `/etc/codex/skills/` |
+| Other harnesses | Inject `SKILL.md` into the system prompt and expose file reading |
 
-一键安装：
+One-line install:
 
 ```bash
 ./scripts/install.sh trae-cn
 powershell -File scripts\install.ps1 -Target codex-user
 ```
 
-支持的 target：`trae-cn`、`trae`、`claude`、`codex-user`、`codex-project`。
+Supported targets: `trae-cn`, `trae`, `claude`, `codex-user`, `codex-project`.
 
-详见 [docs/harness-install.md](./docs/harness-install.md)。
+See [docs/harness-install.md](./docs/harness-install.md) for details.
 
 </details>
 
-## 目录结构
+## Project structure
 
 ```
 procedural-scene-kit/
-├── SKILL.md                    Agent 技能：流程、API、验收、常见坑
-├── references/                 01 规格 · 02 建模 · 03 材质 · 04 光照 · 05 性能 · 06 配方 · 07 迭代 · 08 自动生成
-├── assets/kit/                 可运行内核 + 港区示例
-├── examples/indoor-office/     白昼办公室示例
+├── SKILL.md                    Agent skill: workflow, API, acceptance, pitfalls
+├── references/                 01 spec · 02 mesh · 03 materials · 04 lighting · 05 performance · 06 recipes · 07 fidelity loop · 08 auto generation
+├── assets/kit/                 Runnable core + port example
+├── examples/indoor-office/     Daylight office example
 ├── docs/
+│   ├── hero-16x9.jpg
 │   └── harness-install.md
 ├── scripts/
 │   ├── install.sh
@@ -98,16 +99,16 @@ procedural-scene-kit/
 └── LICENSE
 ```
 
-## 精度档位
+## Fidelity tiers
 
-| 档位 | 三角面 | 用途 |
+| Tier | Triangles | Use |
 |---|---|---|
-| 草稿 | 20k–40k | 定构图与光照 |
-| 标准 | 80k–150k | 可交付演示 |
-| 高精度 | 200k–400k | 对标商业项目 |
+| Draft | 20k–40k | Block out composition and lighting |
+| Standard | 80k–150k | Deliverable demo |
+| High | 200k–400k | Benchmarked against commercial work |
 
-内置示例：港区约 200k 面、室内约 12k 面。迭代流程见 `references/07-fidelity-loop.md`。
+Bundled examples: port ≈ 200k triangles, interior ≈ 12k. Iteration workflow: `references/07-fidelity-loop.md`.
 
-## 许可
+## License
 
-MIT，见 [LICENSE](./LICENSE)。第三方依赖与许可见 [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md)。
+MIT — see [LICENSE](./LICENSE). Third-party dependencies: [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md).
