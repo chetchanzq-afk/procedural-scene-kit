@@ -1,7 +1,7 @@
 # Procedural Scene Kit
 
-**Procedural 3D scenes and film-look rendering for the web. Zero asset files.**
-Code-built models · Canvas/shader textures · SSAO / Bloom / volumetrics · Wet-ground reflections · Dynamic resolution
+**Three.js cinematic scenes, generated in code. Zero asset files.**
+Procedural hard-surface models · shader textures · SSAO / Bloom / volumetric light · wet-floor reflections · dynamic resolution
 
 > **This repo is two things in one.** It is an **Agent Skill** (`SKILL.md`) and a **runnable starter kit** (`assets/kit/`). The `-kit` suffix is the project name, not a package name — the skill ships a working kit because procedural scenes need something to execute. Installed skill title: *Procedural 3D Scene Generation*.
 
@@ -11,7 +11,11 @@ Code-built models · Canvas/shader textures · SSAO / Bloom / volumetrics · Wet
 
 ![Rainy-night port generated with Procedural Scene Kit](docs/hero-16x9.jpg)
 
+▶ **[Watch the 25-second demo reel](https://chetchanzq-afk.github.io/procedural-scene-kit/assets/kit/demo.html)** — the camera keeps moving while only the lighting changes, so you can see that the geometry never reloads.
+
 Run one command locally to see a scene yourself — see **Quick start** below.
+
+**The port is one demo, not the limit.** The same core builds warehouses, streets, interiors, facilities, hangars and parking structures — you replace the props, the layout and the theme. See **Two ways to use it**.
 
 ## Gallery
 
@@ -31,8 +35,27 @@ Traditional Web 3D relies on downloading `.glb` models and `.png/.jpg` textures.
 
 Procedural Scene Kit generates models, textures, lighting and post-processing **at runtime**. You write code; you never touch asset files.
 
-> **Good for:** hard-surface environments — ports, warehouses, streets, interiors, facilities, bases.
-> **Not for:** characters, organics, or vegetation that need unique hand-authored art. Volumetric fog is disabled by default and needs per-scene tuning (`theme.volumetric`, 0.02–0.08).
+## Two ways to use it
+
+The two paths are independent. Pick the row that matches you.
+
+**Path A — Run it, then change three files.**
+`assets/kit/` is a complete, runnable scene. Copy it into your project and replace:
+
+- `src/props.js` — prop library
+- `src/scene-*.js` — layout and camera
+- `src/themes.js` — lighting, fog, palette, post FX
+
+The core (`kit / mesh / materials / pipeline / quality / shafts / weather`) stays untouched. No agent, no install, no build step — `python -m http.server` and you are looking at a scene.
+
+**Path B — Let an agent build the scene for you.**
+The repo root is also a skill ([`SKILL.md`](./SKILL.md) + `references/`). Install it into Trae / Claude Code / Codex, then describe the scene in plain language. The agent follows a fixed generate → screenshot → `__stats()` → iterate loop instead of free-styling. Details and install paths in **Path B in detail** below.
+
+> **Tiers and limits — read this before investing time**
+> Port example ≈ 200k triangles, interior ≈ 12k. Three presets: draft 20k–40k, standard 80k–150k, high 200k–400k.
+> Built for **hard-surface environments**: ports, warehouses, streets, interiors, facilities, bases, hangars, parking structures. **Not for** characters, organics or vegetation that need hand-authored art.
+> Volumetric fog is off by default — tune `theme.volumetric` per scene (0.02–0.08).
+> Every scene exposes `window.__stats()` plus `?shot` and `?spin` URL hooks, so screenshots and agent acceptance are reproducible.
 
 ## Quick start
 
@@ -60,17 +83,7 @@ python -m http.server 8877
 
 > Examples load three.js r180 from a CDN via importmap. For offline use, point the importmap in `index.html` to local files.
 
-## Use as a starter project
-
-Copy `assets/kit/` into your project and replace three things to get a new scene:
-
-- `src/props.js` — prop library
-- `src/scene-*.js` — layout and camera
-- `src/themes.js` — lighting, fog, palette, post FX
-
-The core modules (`kit / mesh / materials / pipeline / quality / shafts / weather`) stay untouched.
-
-## Use as an Agent Skill
+## Path B in detail: use as an Agent Skill
 
 The repository root is a skill: [`SKILL.md`](./SKILL.md) + `references/` + the runnable kit. Copy the **whole directory**, not just `SKILL.md` — the skill reads `references/` and runs `assets/kit/`.
 
@@ -108,14 +121,6 @@ The agent then follows a fixed loop instead of free-styling:
 4. iterate until the triangle budget is hit (20k draft / 80k–150k standard / 200k–400k high)
 
 Acceptance is mechanical: `__stats()` must report the target triangles and draw calls, and the screenshot must be inspected — "looks about right" is not a pass. If the harness has no browser tool, the skill still generates code but you verify by opening the page yourself.
-
-### Three ways to use this repo
-
-| Goal | Do this |
-|---|---|
-| Have an agent generate a scene | Install the skill, then describe the scene |
-| Hand-code your own scene | Copy `assets/kit/`, replace `props.js` / `scene-*.js` / `themes.js` |
-| Just look at it | Open the live demo, or serve `assets/kit` locally |
 
 ## Project structure
 
