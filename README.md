@@ -1,18 +1,25 @@
 # Procedural Scene Kit
 
-用代码生成 3D 场景与电影感渲染：模型、贴图、光照、后处理全部在运行时生成，不下载任何 glb / png / 音频。
+**用代码生成 3D 场景与电影感渲染，零外部资产文件。**
+代码建模 · Canvas/shader 程序化贴图 · SSAO/Bloom/体积光 · 湿地面反射 · 动态分辨率
 
-A procedural 3D scene kit for the web: code-generated models, canvas textures, film-look post-processing, and quality scaling. Zero external assets.
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+[![three.js](https://img.shields.io/badge/three.js-r180-black?style=flat-square)](https://threejs.org)
 
-## 它能做什么
+<!-- TODO: 替换为 assets/kit 示例运行截图（当前使用仓库内预览图） -->
+![港区示例](assets/kit/preview.jpg)
 
-- **代码建模**：`box / rbox / cyl / tube / plane / label` 组合出集装箱、墙体、家具、设备
-- **程序化贴图**：划痕、斑驳、锈迹、箱号与警示牌，全部 Canvas / shader 生成
-- **渲染管线**：SSAO、运动模糊、Bloom、体积光（光片 + 屏幕空间）、AgX、镜头脏污、颗粒、FXAA、自动曝光
-- **湿地面反射**：镜像相机 + 半分辨率反射
-- **天气**：实例化雨丝，可在主题里一键开关
-- **画质调度**：四档预设 + 帧时闭环动态分辨率
-- **可验收**：`__stats()`、`?shot`、`?spin`，方便截图回归
+本地运行一条命令即可看到示例场景，见下方「快速开始」。
+
+---
+
+## 🎯 解决什么问题
+
+传统 Web 3D 场景依赖下载 `.glb` 模型和 `.png/.jpg` 贴图，带来三个问题：**资产体积大**、**加载慢**、**风格不统一且难以批量调整**。
+Procedural Scene Kit 把模型、贴图、光照、后处理**全部放到运行时生成**，你只写代码，不碰素材文件。
+
+> 适合：港口、仓库、街道、室内、基地等**硬表面场景**的快速原型与演示交付。
+> 不适合：角色、有机体、植被等需要唯一美术资产的场景；体积雾默认关闭，需按场景手动调参（`theme.volumetric`，建议 0.02–0.08）。
 
 ## 快速开始
 
@@ -33,7 +40,18 @@ python -m http.server 8877
 
 > 示例通过 importmap 从 CDN 加载 three.js r180；离线部署时把 `index.html` 里的 importmap 改成本地路径。
 
-## 作为 Agent Skill 使用
+## 作为起始工程使用
+
+复制 `assets/kit/` 到你的项目，替换三处内容即可换场景：
+
+- `src/props.js`：道具库
+- `src/scene-*.js`：布局与相机
+- `src/themes.js`：光照、雾、配色、后处理
+
+内核（`kit / mesh / materials / pipeline / quality / shafts / weather`）不需要改。
+
+<details>
+<summary>作为 Agent Skill 使用</summary>
 
 本仓库同时是一个 `SKILL.md` 技能，装了之后可以直接说「做一个雨夜港区」让 Agent 按流程生成。
 
@@ -55,15 +73,7 @@ powershell -File scripts\install.ps1 -Target codex-user
 
 详见 [docs/harness-install.md](./docs/harness-install.md)。
 
-## 作为起始工程使用
-
-复制 `assets/kit/` 到你的项目，替换三处内容即可换场景：
-
-- `src/props.js`：道具库
-- `src/scene-*.js`：布局与相机
-- `src/themes.js`：光照、雾、配色、后处理
-
-内核（`kit / mesh / materials / pipeline / quality / shafts / weather`）不需要改。
+</details>
 
 ## 目录结构
 
@@ -91,13 +101,6 @@ procedural-scene-kit/
 | 高精度 | 200k–400k | 对标商业项目 |
 
 内置示例：港区约 200k 面、室内约 12k 面。迭代流程见 `references/07-fidelity-loop.md`。
-
-## 限制
-
-- 适合硬表面场景（港口、仓库、街道、室内、基地），不适合角色、有机体、植被
-- 程序化资产风格统一，但缺少唯一美术资产
-- 体积雾默认关闭，需按场景调 `theme.volumetric`（0.02–0.08）
-- 需要 WebGL2 与较新的浏览器
 
 ## 许可
 
