@@ -128,6 +128,7 @@ procedural-scene-kit/
 │   ├── hero-16x9.jpg
 │   ├── gallery-day.jpg
 │   ├── gallery-interior.jpg
+│   ├── social-preview.jpg
 │   └── harness-install.md
 ├── scripts/
 │   ├── install.sh
