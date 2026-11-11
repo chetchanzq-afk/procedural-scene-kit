@@ -1,0 +1,22 @@
+{
+  "title": "白昼办公室",
+  "genre": "interior-office",
+  "scale": { "width": 18, "depth": 12, "height": 3.6 },
+  "time": "day",
+  "weather": "clear",
+  "mood": "明亮、安静、有使用痕迹",
+  "palette": {
+    "primary": "#dad5c6",
+    "secondary": "#8a6a45",
+    "accent": "#9fd8ff",
+    "ground": "#8a8578"
+  },
+  "requiredProps": [
+    "带窗墙", "实墙", "带门墙", "天花板与顶灯", "办公桌", "椅子",
+    "货架", "文件柜", "显示器", "风管", "纸箱", "台灯"
+  ],
+  "counts": { "desks": 3, "windows": 3, "shelves": 2, "lightPanels": 4 },
+  "performance": "high",
+  "camera": { "position": [-6.5, 1.7, 4.8], "lookAt": [2, 1.35, -3] },
+  "forbidden": ["角色", "植被", "外部贴图"]
+}

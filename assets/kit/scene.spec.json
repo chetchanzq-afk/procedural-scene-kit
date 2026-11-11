@@ -1,0 +1,19 @@
+{
+  "title": "港区堆场",
+  "genre": "industrial-yard",
+  "scale": { "width": 96, "depth": 84, "height": 14 },
+  "time": "dawn",
+  "weather": "fog",
+  "mood": "冷、潮湿、机械感",
+  "palette": {
+    "primary": "#2f5b74",
+    "secondary": "#9c3a2c",
+    "accent": "#d08a2a",
+    "ground": "#6d6a63"
+  },
+  "requiredProps": ["集装箱", "防撞墩", "灯杆", "货架", "墙体", "木箱", "管道", "指示牌", "检修通道", "系缆桩", "空调外机", "托盘"],
+  "counts": { "containers": 20, "walls": 9, "lightMasts": 4, "barriers": 7 },
+  "performance": "high",
+  "camera": { "position": [-26, 8.5, 32], "lookAt": [0, 4, -2] },
+  "forbidden": ["角色", "植被", "外部贴图"]
+}

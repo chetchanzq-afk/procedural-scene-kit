@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>白昼办公室 · 程序化场景</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --ink: #0b0d0f; --bone: #e8e4da; --dim: rgba(232,228,218,.55);
+    --line: rgba(232,228,218,.18); --signal: #ffb347; --alarm: #ff5a40;
+    --sans: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  html, body { height: 100%; margin: 0; background: var(--ink); overflow: hidden; }
+  body { font-family: var(--sans); color: var(--bone); }
+  #view { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+  .hud { position: fixed; inset: 0; pointer-events: none; font-family: var(--mono); }
+  .hud.off { display: none; }
+  .panel {
+    position: absolute; left: 16px; top: 16px; padding: 10px 12px; min-width: 208px;
+    background: rgba(11,13,15,.62); border-left: 2px solid var(--signal); backdrop-filter: blur(6px);
+    font-size: 12px; line-height: 1.65; letter-spacing: .04em;
+  }
+  .panel b { font-weight: 600; }
+  .panel .k { color: var(--dim); display: inline-block; min-width: 60px; }
+  .panel .hint { margin-top: 8px; color: var(--dim); }
+  .panel .hint kbd { font-family: var(--mono); border: 1px solid var(--line); padding: 0 4px; }
+  #boot {
+    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: var(--ink); transition: opacity .5s ease; z-index: 20; letter-spacing: .2em; font-size: 13px;
+  }
+  #boot.done { opacity: 0; pointer-events: none; }
+  #fatal {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding: 10px 14px;
+    background: rgba(40,8,4,.9); color: #ffb4a8; font: 12px/1.5 var(--mono);
+    white-space: pre-wrap; max-height: 42%; overflow: auto; display: none;
+  }
+</style>
+</head>
+<body>
+<canvas id="view"></canvas>
+
+<div class="hud" id="hud">
+  <div class="panel">
+    <div><b id="h-theme">—</b></div>
+    <div><span class="k">画质</span><span id="h-quality">—</span></div>
+    <div><span class="k">分辨率</span><span id="h-res">—</span></div>
+    <div><span class="k">Draw</span><span id="h-calls">—</span></div>
+    <div><span class="k">三角面</span><span id="h-tris">—</span></div>
+    <div><span class="k">帧时</span><span id="h-ms">—</span></div>
+    <div class="hint">拖动视角 · <kbd>WASD</kbd> 移动 · <kbd>Q</kbd><kbd>E</kbd> 升降</div>
+  </div>
+</div>
+
+<div id="boot">正在生成办公室</div>
+<div id="fatal"></div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
