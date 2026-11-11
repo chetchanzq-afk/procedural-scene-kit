@@ -55,9 +55,9 @@ export function buildOffice(kit) {
 
   // ---- 体积光片：从三扇窗射入的光锥（比屏幕空间光柱更适合室内）----
   const beams = [
-    { x: -6, w: 3.0, i: 0.2 },
-    { x: 0, w: 3.2, i: 0.24 },
-    { x: 6, w: 3.0, i: 0.2 },
+    { x: -6, w: 3.0, i: 0.13 },
+    { x: 0, w: 3.2, i: 0.16 },
+    { x: 6, w: 3.0, i: 0.13 },
   ];
   for (const b of beams) {
     kit.shafts.add({

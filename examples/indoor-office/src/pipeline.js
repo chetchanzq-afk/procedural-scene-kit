@@ -179,6 +179,7 @@ const FINAL = /* glsl */`
   uniform float uGrain;
   uniform float uCA;
   uniform float uSat;
+  uniform float uContrast;
   uniform float uTime;
   uniform float uAoOn;
   uniform float uRaysOn;
@@ -239,6 +240,10 @@ const FINAL = /* glsl */`
     col += vec3(1.0, 0.94, 0.82) * dirt * glare * uDirtAmount;
 
     col = agx(col);
+
+    // AgX 会把极暗处抬到约 0.18，室内会发灰；这里压掉黑位
+    col = max(col - 0.045, 0.0) * (1.0 / 0.955);
+    col = clamp((col - 0.5) * uContrast + 0.5, 0.0, 1.0);
 
     float l = dot(col, vec3(0.2126, 0.7152, 0.0722));
     col = mix(vec3(l), col, uSat);
@@ -313,6 +318,7 @@ export function createPipeline(renderer, options = {}) {
     uGrain: { value: options.grain ?? 0.05 },
     uCA: { value: options.ca ?? 0.012 },
     uSat: { value: options.saturation ?? 1.0 },
+    uContrast: { value: options.contrast ?? 1.0 },
     uTime: { value: 0 },
     uAoOn: { value: 1 },
     uAoRadius: { value: options.aoRadius ?? 0.55 },
@@ -376,6 +382,7 @@ export function createPipeline(renderer, options = {}) {
     uGrain: uniforms.uGrain,
     uCA: uniforms.uCA,
     uSat: uniforms.uSat,
+    uContrast: uniforms.uContrast,
     uTime: uniforms.uTime,
     uAoOn: uniforms.uAoOn,
     uRaysOn: uniforms.uRaysOn,

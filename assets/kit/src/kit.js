@@ -189,6 +189,39 @@ export function createKit({ canvas, params = {} }) {
   sun.shadow.camera.far = 260;
   scene.add(hemi, sun, sun.target);
 
+  // 天空穹顶：平涂背景在白天会显得很假，这里用主题色做一条纵向渐变。
+  // 主题不写 skyTop/skyBottom 时三段同色，等于保持原来的纯色背景。
+  const skyMat = new THREE.ShaderMaterial({
+    side: THREE.BackSide,
+    depthWrite: false,
+    fog: false,
+    uniforms: {
+      uTop: { value: new THREE.Color(0x000000) },
+      uMid: { value: new THREE.Color(0x000000) },
+      uBottom: { value: new THREE.Color(0x000000) },
+    },
+    vertexShader: /* glsl */`
+      varying vec3 vDir;
+      void main() {
+        vDir = normalize(position);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: /* glsl */`
+      varying vec3 vDir;
+      uniform vec3 uTop, uMid, uBottom;
+      void main() {
+        float h = vDir.y;
+        vec3 c = h > 0.0 ? mix(uMid, uTop, pow(h, 0.55)) : mix(uMid, uBottom, pow(-h, 0.45));
+        gl_FragColor = vec4(c, 1.0);
+      }
+    `,
+  });
+  const skyDome = new THREE.Mesh(new THREE.SphereGeometry(600, 24, 16), skyMat);
+  skyDome.frustumCulled = false;
+  skyDome.renderOrder = -1;
+  scene.add(skyDome);
+
   const controls = createControls(camera, canvas);
   if (params.shot) controls.enabled = false;
 
@@ -204,6 +237,9 @@ export function createKit({ canvas, params = {} }) {
     const t = getTheme(id);
     state.theme = t;
     scene.background = new THREE.Color(t.sky);
+    skyMat.uniforms.uTop.value.setHex(t.skyTop ?? t.sky);
+    skyMat.uniforms.uMid.value.setHex(t.sky);
+    skyMat.uniforms.uBottom.value.setHex(t.skyBottom ?? t.sky);
     scene.fog = new THREE.FogExp2(t.fog.color, t.fog.density);
 
     sun.color.setHex(t.sun.color);
@@ -248,6 +284,7 @@ export function createKit({ canvas, params = {} }) {
     pipeline.uniforms.uExposure.value = t.exposure;
     pipeline.uniforms.uBloomStrength.value = t.post.bloom;
     pipeline.uniforms.uSat.value = t.post.saturation;
+    if (t.post.contrast !== undefined) pipeline.uniforms.uContrast.value = t.post.contrast;
     pipeline.uniforms.uCA.value = t.post.ca;
     pipeline.uniforms.uGrain.value = t.post.grain;
     pipeline.uniforms.uVignette.value = t.post.vignette;
@@ -386,6 +423,7 @@ export function createKit({ canvas, params = {} }) {
         if (volFrame % 2 === 0) {
           rain.mesh.visible = false;
           shafts.group.visible = false;
+          skyDome.visible = false;
           const bg = scene.background;
           scene.background = null;
           scene.overrideMaterial = depthOverride;
@@ -395,6 +433,7 @@ export function createKit({ canvas, params = {} }) {
           renderer.setRenderTarget(null);
           scene.overrideMaterial = null;
           scene.background = bg;
+          skyDome.visible = true;
           rain.mesh.visible = state.theme.weather === 'rain';
           shafts.group.visible = true;
           volVP.multiplyMatrices(volCam.projectionMatrix, volCam.matrixWorldInverse);

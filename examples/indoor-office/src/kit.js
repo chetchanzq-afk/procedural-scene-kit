@@ -219,6 +219,7 @@ export function createKit({ canvas, params = {} }) {
     pipeline.uniforms.uExposure.value = t.exposure;
     pipeline.uniforms.uBloomStrength.value = t.post.bloom;
     pipeline.uniforms.uSat.value = t.post.saturation;
+    if (t.post.contrast !== undefined) pipeline.uniforms.uContrast.value = t.post.contrast;
     pipeline.uniforms.uCA.value = t.post.ca;
     pipeline.uniforms.uGrain.value = t.post.grain;
     pipeline.uniforms.uVignette.value = t.post.vignette;
