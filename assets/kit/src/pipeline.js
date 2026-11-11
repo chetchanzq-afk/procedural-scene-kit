@@ -356,7 +356,7 @@ const FINAL = /* glsl */`
 
     // 镜头脏污：只在太阳附近显形
     float sunDist = length(uv - uSunUv);
-    float glare = smoothstep(0.65, 0.0, sunDist);
+    float glare = smoothstep(0.3, 0.0, sunDist);
     float dirt = texture2D(tDirt, uv * 1.6).r;
     col += vec3(1.0, 0.94, 0.82) * dirt * glare * uDirtAmount;
 

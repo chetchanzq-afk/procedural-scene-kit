@@ -40,6 +40,7 @@ Try it online (GitHub Pages):
 
 - Port: https://chetchanzq-afk.github.io/procedural-scene-kit/assets/kit/
 - Interior office: https://chetchanzq-afk.github.io/procedural-scene-kit/examples/indoor-office/
+- **Demo reel**: https://chetchanzq-afk.github.io/procedural-scene-kit/assets/kit/demo.html — a 25-second auto camera reel that switches themes in place. See [docs/recording.md](./docs/recording.md) to record your own.
 
 Run locally — no build step:
 
@@ -129,6 +130,7 @@ procedural-scene-kit/
 │   ├── gallery-day.jpg
 │   ├── gallery-interior.jpg
 │   ├── social-preview.jpg
+│   ├── recording.md
 │   └── harness-install.md
 ├── scripts/
 │   ├── install.sh
