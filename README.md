@@ -5,6 +5,7 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![three.js](https://img.shields.io/badge/three.js-r180-black?style=flat-square)](https://threejs.org)
+[![Live Demo](https://img.shields.io/badge/LIVE_DEMO-在线体验-2ea44f?style=flat-square)](https://chetchanzq-afk.github.io/procedural-scene-kit/assets/kit/)
 
 <!-- TODO: 替换为 assets/kit 示例运行截图（当前使用仓库内预览图） -->
 ![港区示例](assets/kit/preview.jpg)
@@ -23,7 +24,12 @@ Procedural Scene Kit 把模型、贴图、光照、后处理**全部放到运行
 
 ## 快速开始
 
-直接跑示例，不需要构建：
+在线体验（GitHub Pages）：
+
+- 港区：https://chetchanzq-afk.github.io/procedural-scene-kit/assets/kit/
+- 室内：https://chetchanzq-afk.github.io/procedural-scene-kit/examples/indoor-office/
+
+本地运行，不需要构建：
 
 ```bash
 cd assets/kit
